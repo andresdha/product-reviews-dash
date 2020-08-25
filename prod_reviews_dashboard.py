@@ -39,10 +39,12 @@ app.layout = html.Div([
                     id='tabs',
                     value='tab-1',
                     children=[
-                        dcc.Tab(label='Information',
+                        dcc.Tab(label='Motivation',
                                 value='tab-1'),
+                        dcc.Tab(label='General Information',
+                                value='tab-2'),
                         dcc.Tab(label='Visualizations',
-                                value='tab-2')
+                                value='tab-3')
                     ]),
                 html.Div(id='content')
             ])
@@ -143,7 +145,7 @@ fig_table.update_layout(width=900, height=300)
 @app.callback(Output('content', 'children'),
               [Input('tabs', 'value')])
 def render_content(tab):
-    if tab == 'tab-1':
+    if tab == 'tab-2':
         return html.Div([
             html.H1('Context For Understanding the Dashboard'),
             dcc.Markdown(
@@ -151,7 +153,7 @@ def render_content(tab):
                 children=[file_string]
             )
         ])
-    elif tab == 'tab-2':
+    elif tab == 'tab-3':
         return html.Div([
                     html.Div([
                         dcc.Graph(
