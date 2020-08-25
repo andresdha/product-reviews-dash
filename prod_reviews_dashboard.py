@@ -49,10 +49,6 @@ app.layout = html.Div([
                 html.Div(id='content')
             ])
 
-md_file = open('Files/README.md', 'r')
-file_string = md_file.read()
-md_file.close()
-
 ###############
 ### Figures ###
 ###############
@@ -112,7 +108,7 @@ topics_df = data.groupby('comp_score').mean()
 fig_bar = px.bar(data_frame=topics_df, x=topics_df.index, y='reviews.rating', hover_data=['compound', 'reviews.doRecommend'], color=topics_df.index)
 
 fig_bar.update_xaxes(title='Sentiment Score')
-fig_bar.update_yaxes(title='Average Review Rating')
+fig_bar.update_yaxes(title='Average Review Score')
 fig_bar.update_layout(title='Review Sentiment', height=625)
 
 topics_list = []
@@ -138,6 +134,27 @@ fig_table = go.Figure(data=[go.Table(
 
 fig_table.update_layout(width=900, height=300)
 
+################################
+### Loading Markdown Content ###
+################################
+
+### Tab 1
+md_mot = open('Files/Motivation.md', 'r')
+motivation_string = md_mot.read()
+md_mot.close()
+
+
+### Tab 2
+md_file = open('Files/README.md', 'r')
+file_string = md_file.read()
+md_file.close()
+
+### tab 3
+
+md_insights = open('Files/Insights.md', 'r')
+insights_string = md_insights.read()
+md_insights.close()
+
 #################
 ### Callbacks ###
 #################
@@ -145,11 +162,20 @@ fig_table.update_layout(width=900, height=300)
 @app.callback(Output('content', 'children'),
               [Input('tabs', 'value')])
 def render_content(tab):
-    if tab == 'tab-2':
+
+    if tab == 'tab-1':
+        return html.Div([
+                dcc.Markdown(
+                    id='mrkdwn-tab1',
+                    children=[motivation_string]
+                )
+            ])
+
+    elif tab == 'tab-2':
         return html.Div([
             html.H1('Context For Understanding the Dashboard'),
             dcc.Markdown(
-                id='mrkdwn',
+                id='mrkdwn-tab2',
                 children=[file_string]
             )
         ])
@@ -183,7 +209,14 @@ def render_content(tab):
                         )
                     ], style={
                         'display':'inline-block',
-                        })
+                        }),
+                    html.Div([
+                        html.H3('Key Insights:'),
+                        dcc.Markdown(
+                            id='mrkdwn-tab3',
+                            children=[insights_string]
+                        )
+                    ])
         ])
 
 
