@@ -28,6 +28,7 @@ tfidf_pos = joblib.load('Models/tfidf_pos.sav')
 
 # Create app obj
 app = dash.Dash()
+server = app.server
 
 #################
 ### App Layut ###
@@ -185,4 +186,4 @@ def render_content(tab):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server()
